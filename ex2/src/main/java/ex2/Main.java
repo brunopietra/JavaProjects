@@ -1,34 +1,4 @@
-/*
-package ti2ccEx2;
 
-import java.util.Scanner;
-
-public class Main {
-
-	public static void main(String[] args) {
-		Scanner tec = new Scanner(System.in);
-		DAO dao = new DAO();
-		
-		dao.conectar();
-		
-		System.out.println("Escolha uma das seguintes opcoes: 1-listar, 2-inserir, 3-excluir, 4-atualizar, 5-sair:");
-		int resp = tec.nextInt();
-		
-		while(resp == 1 || resp == 2 || resp == 3 || resp == 4) {
-			if (resp == 1) {
-				System.out.println("==== Mostrar pessoas === ");
-				Pessoa[] pessoa = dao.getPessoa();
-				for(int i = 0; i < pessoa.length; i++) {
-					System.out.println(pessoa[i].toString());
-				}
-				
-			}
-			tec.close();
-		}
-	}
-
-}
-*/
 package ex2;
 
 import java.util.Scanner;
