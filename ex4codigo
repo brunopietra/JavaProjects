@@ -15,20 +15,13 @@ import java.util.HashMap;
 
 
 public class Main {
-    // Endpoint do modelo. Para mais informações, ver o seguinte
-    // vídeo no tempo já marcado: https://youtu.be/jTUvOlWBuVw?t=188.
-    // O endpoint está presente no campo "REST Endpoint" no serviço web do modelo.
+    
     private static final String MODEL_URL = "";
     
-    // Chave de API do seu serviço na Azure. Para mais informações assistir o seguinte
-    // vídeo no tempo já marcado: https://youtu.be/jTUvOlWBuVw?t=188
-    // A chave está presente no campo "Primary Key" no serviço web do modelo.
+    
     private static final String API_KEY = "";
 
     public static void main(String[] Args) throws Exception {
-        // Construímos a nosso objeto HTTP que será enviado ao servidor do modelo. 
-        // O `API_KEY` é utilizado nos headers e os dados enviados são atribuídos ao objeto
-        // na linha 43 por meio da função `.sampleData`
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(MODEL_URL))
                 .headers("Content-Type", "application/json", "Authorization", "Bearer " + API_KEY)
@@ -36,13 +29,8 @@ public class Main {
                 .build();
 
         try {
-            // Realiza-se a chamada HTTP para o servidor do modelo. O objeto `client` definido na linha 40
-            // chama o método `#send` passando o request da linha 41, que é quem contém as informações da URL, 
-            // autenticação com a API_KEY e os dados a serem classificados.
             HttpResponse<String> response  = client.send(request, HttpResponse.BodyHandlers.ofString());
-            
-            // Convertemos a reposta para uma List de objetos de HashMap. Nas linhas 86-111 há um exemplo de retorno
-            // da função `.responseMapBody`.
+
             List<Map<String, Object>> classification = responseMapBody(response.body());
             System.out.println(classification);
         } catch (IOException | InterruptedException e) {
@@ -50,8 +38,6 @@ public class Main {
         }
     }
 
-    // Cria caracteristicas fakes de áudio a serem classificadas, neste caso há somente um objeto
-    // na lista, porém podem ser quantos forem necessários. Mais explicadas no vídeo https://youtu.be/jTUvOlWBuVw
     private static String sampleData() {
         JSONArray array = new JSONArray();
         JSONObject item = new JSONObject();
@@ -74,19 +60,13 @@ public class Main {
         Map<String, Object> hm;
         List<Map<String, Object>> res = new ArrayList<>();
 
-        // Parseia a resposta em string para JSON
         Object obj = JSONValue.parse(body);
         JSONObject jsonObject = (JSONObject) obj;
         
-        // O retorno do modelo vem dentro da chave `result` 
         JSONArray objs = (JSONArray) jsonObject.get("result"); 
 
-        // Iterar sobre os objetos do `result`, onde cada um representa o resultado da classificação de um set
-        // de características de áudio do Spotify
         for (Object _obj : objs) {
             hm = new HashMap<>();
-            // Obtém o set de chaves do objeto e itera sobre eles, acessando o valor de cada um 
-            // e o adicionando no dicionário em Java a ser retornado
             for (Object o : ((JSONObject) _obj).keySet()) {
                 String key = (String) o;
                 hm.put(key, ((JSONObject) _obj).get(key));
